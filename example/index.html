@@ -46,7 +46,7 @@
         /**
          * We listen on the user's input and feed the data to SaDOS
          */
-         
+
         var key_count = 0;
 
         input.addEventListener('keydown', function (e) {
@@ -87,7 +87,6 @@
             }
           //If backspace is used to delete an input, the count gets reset 
           } else if (e.keyCode === 8) {
-             console.log(input.value);
              if (input.value === '') {
                key_count = 0;
              }
