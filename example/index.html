@@ -18,15 +18,15 @@
 
         var steps = [
           {
-            msg: 'Greetings, human.\nMy name is SaDOS and I am here to guide you through the Markdown basics.\n\nPress ENTER to continue\n',
+            msg: 'Greetings, human.\nMy name is SaDOS and I am here to guide you through the Markdown basics.\nPress ENTER to continue',
             req: new SaDOS_Key(13)
           },
           {
-            msg: 'Okay, let us begin.\nTo make text italic, you put it in asterisk marks.\n\nTry something like this: *hello*\n',
+            msg: 'Okay, let us begin.\nTo make text italic, you put it in asterisk marks.\nTry something like this: *hello*',
             req: /\*[^\*]+\*/i
           },
           {
-            msg: 'Well done!\n\n__END__\n',
+            msg: 'Well done!\n__END__\n',
             req: ''
           }
         ];
@@ -38,8 +38,7 @@
          */
 
         var sados = new SaDOS(input, steps, function (text) {
-          console_container.innerHTML += text + "\n";
-          console_container.scrollTop  = console_container.scrollHeight;
+            console_container.innerHTML += text + "\n";
         });
 
         /**
@@ -61,7 +60,7 @@
 
     <style type="text/css">
       body { background: #000; color: #0f0; font-family: monospace; }
-      #console { width: 100%; height: 300px; overflow-y: hidden; }
+      #console { width: 100%; overflow-y: hidden; margin:0; }
       #input { width: 97%; background: transparent; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; }
       input:focus { outline: none; }​
     </style>

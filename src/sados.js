@@ -18,7 +18,9 @@
     var self  = this,
         step  = 0,
         user_input = [],
-        arrow_press_count = 0;
+        arrow_press_count = 0,
+        SaDOS_prefix = 'SaDOS: ';
+        user_prefix = '$ '
 
     /**
      * This happens whenever a requirement is met, i.e. she can move
@@ -38,8 +40,20 @@
      * the provided callback.
      */
 
-    this.print = function (text) {
-      print_callback.apply(null, [text]);
+    this.print = function (text, user) {
+      if (user === 'user') {
+        text = user_prefix + text;
+        print_callback.apply(null, [text]);
+      } else {
+        text = text.split('\n');
+        msg = [];
+        for (var i = 0; i < text.length; i++) {
+          msg +=  SaDOS_prefix + text[i] + '\n';
+          console.log(msg);
+        }
+        print_callback.apply(null, [msg]);
+        
+      }
     };
 
     /**
@@ -69,7 +83,7 @@
 
       if (code === 13) { //enter
         if (val.length > 0) {
-          self.print('$ ' + val);
+          self.print(val, 'user');
           user_input.push(val);
           self.reset();
         }
