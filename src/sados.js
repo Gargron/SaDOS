@@ -14,7 +14,7 @@
    * This is her, SaDOS.
    */
 
-  var SaDOS = function (steps, print_callback) {
+  var SaDOS = function (input, steps, print_callback) {
     var self  = this,
         step  = 0;
 
@@ -57,27 +57,49 @@
      * and if that is so, moves on.
      */
 
+    this.reset = function() {
+      input.value = "";
+    }
+
+    var user_input = [];
+
     this.check = function (code, val) {
       var req = steps[step].req;
 
-      if (val.length > 0) {
-        self.print('$ ' + val);
-      }
+      if (code === 13) {
+        if (val.length > 0) {
+          self.print('$ ' + val);
+          user_input.push(val);
+          self.reset();
+        }
 
-      if (req instanceof SaDOS_Key) {
-        if (code === req.code) {
-          self.step();
-        }
-      } else if (req instanceof RegExp) {
-        if (val.search(req) !== -1) {
-          self.step();
-        }
-      } else {
-        if (req === val) {
-          self.step();
+        console.log(user_input);
+
+        if (req instanceof SaDOS_Key) {
+          if (code === req.code) {
+            self.step();
+          }
+        } else if (req instanceof RegExp) {
+          if (val.search(req) !== -1) {
+            self.step();
+          }
+        } else {
+          if (req === val) {
+            self.step();
+          }
         }
       }
     };
+
+    // var user_input = [];
+
+    // this.keyPressHandler = function(code, val) {
+    //   if (val.length > 0) {
+    //     user_input.push(val);
+    //   } else {
+    //     val = "fuck";
+    //   }
+    // };
   };
 
   /**

@@ -7,8 +7,7 @@
     <script>
       window.onload = function () {
         var console_container = document.getElementById('console'),
-            input             = document.getElementById('input'),
-            user_input        = [];
+            input             = document.getElementById('input');
 
         /**
          * The steps are the main thing. Each step defines a message
@@ -38,7 +37,7 @@
          * wants to say, so we give her the callback.
          */
 
-        var sados = new SaDOS(steps, function (text) {
+        var sados = new SaDOS(input, steps, function (text) {
           console_container.innerHTML += text + "\n";
           console_container.scrollTop  = console_container.scrollHeight;
         });
@@ -50,49 +49,52 @@
         var key_count = 0;
 
         input.addEventListener('keydown', function (e) {
-          //When Enter is Pressed
-          if (e.keyCode === 13) {
-            sados.check(e.keyCode, input.value);
-            user_input.push(input.value);
-            input.value = '';
-            key_count = 0;
+          sados.check(e.keyCode, input.value);
+          //sados.keyPressHandler(e.keyCode, input.value);
+        });
+        //   //When Enter is Pressed
+        //   if (e.keyCode === 13) {
+        //     sados.check(e.keyCode, input.value);
+        //     user_input.push(input.value);
+        //     input.value = '';
+        //     key_count = 0;
           
-          //When up arrow is pressed get previous input
-          } else if (e.keyCode === 38) {
-            key_count++;
+        //   //When up arrow is pressed get previous input
+        //   } else if (e.keyCode === 38) {
+        //     key_count++;
             
-            var latest_input = user_input[user_input.length - key_count];
+        //     var latest_input = user_input[user_input.length - key_count];
 
-            if (latest_input !== undefined) {
-              if (latest_input === input.value) {
-                input.value = latest_input;
-              }
-              else {
-                input.value = latest_input;
-              }
-            }
-          //When down arrow is pressed get next input
-          } else if (e.keyCode === 40) {
-            key_count--;
+        //     if (latest_input !== undefined) {
+        //       if (latest_input === input.value) {
+        //         input.value = latest_input;
+        //       }
+        //       else {
+        //         input.value = latest_input;
+        //       }
+        //     }
+        //   //When down arrow is pressed get next input
+        //   } else if (e.keyCode === 40) {
+        //     key_count--;
             
-            var latest_input = user_input[user_input.length - key_count];
+        //     var latest_input = user_input[user_input.length - key_count];
 
-            if (latest_input !== undefined) {
-              if (latest_input === input.value) {
-                input.value = latest_input;
+        //     if (latest_input !== undefined) {
+        //       if (latest_input === input.value) {
+        //         input.value = latest_input;
                 
-              }
-              else {
-                input.value = latest_input;
-              }
-            }
-          //If backspace is used to delete an input, the count gets reset 
-          } else if (e.keyCode === 8) {
-             if (input.value === '') {
-               key_count = 0;
-             }
-          }
-        }, false);
+        //       }
+        //       else {
+        //         input.value = latest_input;
+        //       }
+        //     }
+        //   //If backspace is used to delete an input, the count gets reset 
+        //   } else if (e.keyCode === 8) {
+        //      if (input.value === '') {
+        //        key_count = 0;
+        //      }
+        //   }
+        // }, false);
 
 
         /**
