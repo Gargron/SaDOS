@@ -46,55 +46,9 @@
          * We listen on the user's input and feed the data to SaDOS
          */
 
-        var key_count = 0;
-
         input.addEventListener('keydown', function (e) {
           sados.check(e.keyCode, input.value);
         });
-        //   //When Enter is Pressed
-        //   if (e.keyCode === 13) {
-        //     sados.check(e.keyCode, input.value);
-        //     user_input.push(input.value);
-        //     input.value = '';
-        //     key_count = 0;
-          
-        //   //When up arrow is pressed get previous input
-        //   } else if (e.keyCode === 38) {
-        //     key_count++;
-            
-        //     var latest_input = user_input[user_input.length - key_count];
-
-        //     if (latest_input !== undefined) {
-        //       if (latest_input === input.value) {
-        //         input.value = latest_input;
-        //       }
-        //       else {
-        //         input.value = latest_input;
-        //       }
-        //     }
-        //   //When down arrow is pressed get next input
-        //   } else if (e.keyCode === 40) {
-        //     key_count--;
-            
-        //     var latest_input = user_input[user_input.length - key_count];
-
-        //     if (latest_input !== undefined) {
-        //       if (latest_input === input.value) {
-        //         input.value = latest_input;
-                
-        //       }
-        //       else {
-        //         input.value = latest_input;
-        //       }
-        //     }
-        //   //If backspace is used to delete an input, the count gets reset 
-        //   } else if (e.keyCode === 8) {
-        //      if (input.value === '') {
-        //        key_count = 0;
-        //      }
-        //   }
-        // }, false);
-
 
         /**
          * After we configured all that, we start her up
