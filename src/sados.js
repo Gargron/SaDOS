@@ -16,7 +16,9 @@
 
   var SaDOS = function (input, steps, print_callback) {
     var self  = this,
-        step  = 0;
+        step  = 0,
+        user_input = [],
+        arrow_press_count = 0;
 
     /**
      * This happens whenever a requirement is met, i.e. she can move
@@ -48,6 +50,11 @@
       self.print(steps[step].msg);
     };
 
+    this.reset = function() {
+      input.value = "";
+      arrow_press_count = 0;
+    };
+
     /**
      * This is invoked through e.g. an event listener on the input
      * element and provided with user input data. What key they
@@ -57,23 +64,15 @@
      * and if that is so, moves on.
      */
 
-    this.reset = function() {
-      input.value = "";
-    }
-
-    var user_input = [];
-
     this.check = function (code, val) {
       var req = steps[step].req;
 
-      if (code === 13) {
+      if (code === 13) { //enter
         if (val.length > 0) {
           self.print('$ ' + val);
           user_input.push(val);
           self.reset();
         }
-
-        console.log(user_input);
 
         if (req instanceof SaDOS_Key) {
           if (code === req.code) {
@@ -88,18 +87,39 @@
             self.step();
           }
         }
+      } else if (code === 38) { //up arrow
+        arrow_press_count++;
+        var latest_input = user_input[user_input.length - arrow_press_count];
+
+        if (latest_input !== undefined) {
+          if (latest_input === input.value) {
+            input.value = latest_input;
+          }
+          else {
+            input.value = latest_input;
+          }
+        }
+      
+      } else if (code === 40) { //down arrow
+        arrow_press_count--;
+        
+        var latest_input = user_input[user_input.length - arrow_press_count];
+        
+        if (latest_input !== undefined) {
+          if (latest_input === input.value) {
+            input.value = latest_input;
+          }
+          else {
+            input.value = latest_input;
+          }
+        }
+      
+      } else if (code === 8) { //backspace 
+         if (input.value === '') {
+           arrow_press_count = 0;
+         }
       }
     };
-
-    // var user_input = [];
-
-    // this.keyPressHandler = function(code, val) {
-    //   if (val.length > 0) {
-    //     user_input.push(val);
-    //   } else {
-    //     val = "fuck";
-    //   }
-    // };
   };
 
   /**
