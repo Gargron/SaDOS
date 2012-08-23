@@ -85,6 +85,7 @@
           self.print(val, 'user');
           user_input.push(val);
           self.reset();
+          self.listen(val);
         }
 
         if (req instanceof SaDOS_Key) {
@@ -133,6 +134,15 @@
          }
       }
     };
+    
+    this.listen = function(val) {
+      if (val === "boobs") {
+        self.print('hooray for boobs!');
+      }  
+    }
+
+
+
   };
 
   /**
