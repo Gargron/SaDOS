@@ -81,7 +81,7 @@
       var req = steps[step].req;
 
       if (code === 13) { //enter
-        if (val.length > 0) {
+        if (val.length !== undefined) {
           self.print(val, 'user');
           user_input.push(val);
           self.reset();
