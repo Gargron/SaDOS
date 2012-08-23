@@ -47,12 +47,11 @@
       } else {
         text = text.split('\n');
         msg = [];
-        for (var i = 0; i < text.length; i++) {
+        for (var i = 0; i < text.length - 1; i++) {
           msg +=  SaDOS_prefix + text[i] + '\n';
-          console.log(msg);
         }
+        msg +=  SaDOS_prefix + text[text.length - 1]
         print_callback.apply(null, [msg]);
-        
       }
     };
 
