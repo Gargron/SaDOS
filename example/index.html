@@ -7,8 +7,7 @@
     <script>
       window.onload = function () {
         var console_container = document.getElementById('console'),
-            input             = document.getElementById('input'),
-            user_input        = [];
+            input             = document.getElementById('input');
 
         /**
          * The steps are the main thing. Each step defines a message
@@ -19,15 +18,15 @@
 
         var steps = [
           {
-            msg: 'Greetings, human.\nMy name is SaDOS and I am here to guide you through the Markdown basics.\n\nPress ENTER to continue\n',
+            msg: 'Greetings, human.\nMy name is SaDOS and I am here to guide you through the Markdown basics.\nPress ENTER to continue',
             req: new SaDOS_Key(13)
           },
           {
-            msg: 'Okay, let us begin.\nTo make text italic, you put it in asterisk marks.\n\nTry something like this: *hello*\n',
+            msg: 'Okay, let us begin.\nTo make text italic, you put it in asterisk marks.\nTry something like this: *hello*',
             req: /\*[^\*]+\*/i
           },
           {
-            msg: 'Well done!\n\n__END__\n',
+            msg: 'Well done!\n__END__',
             req: ''
           }
         ];
@@ -38,62 +37,17 @@
          * wants to say, so we give her the callback.
          */
 
-        var sados = new SaDOS(steps, function (text) {
-          console_container.innerHTML += text + "\n";
-          console_container.scrollTop  = console_container.scrollHeight;
+        var sados = new SaDOS(input, steps, function (text) {
+            console_container.innerHTML += text + "\n";
         });
 
         /**
          * We listen on the user's input and feed the data to SaDOS
          */
 
-        var key_count = 0;
-
         input.addEventListener('keydown', function (e) {
-          //When Enter is Pressed
-          if (e.keyCode === 13) {
-            sados.check(e.keyCode, input.value);
-            user_input.push(input.value);
-            input.value = '';
-            key_count = 0;
-          
-          //When up arrow is pressed get previous input
-          } else if (e.keyCode === 38) {
-            key_count++;
-            
-            var latest_input = user_input[user_input.length - key_count];
-
-            if (latest_input !== undefined) {
-              if (latest_input === input.value) {
-                input.value = latest_input;
-              }
-              else {
-                input.value = latest_input;
-              }
-            }
-          //When down arrow is pressed get next input
-          } else if (e.keyCode === 40) {
-            key_count--;
-            
-            var latest_input = user_input[user_input.length - key_count];
-
-            if (latest_input !== undefined) {
-              if (latest_input === input.value) {
-                input.value = latest_input;
-                
-              }
-              else {
-                input.value = latest_input;
-              }
-            }
-          //If backspace is used to delete an input, the count gets reset 
-          } else if (e.keyCode === 8) {
-             if (input.value === '') {
-               key_count = 0;
-             }
-          }
-        }, false);
-
+          sados.check(e.keyCode, input.value);
+        });
 
         /**
          * After we configured all that, we start her up
@@ -101,12 +55,13 @@
 
         sados.start();
         input.focus();
+        document.onclick = function() {input.focus();} //input always focused
       };
     </script>
 
     <style type="text/css">
       body { background: #000; color: #0f0; font-family: monospace; }
-      #console { width: 100%; height: 300px; overflow-y: hidden; }
+      #console { width: 100%; overflow-y: hidden; margin:0; }
       #input { width: 97%; background: transparent; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; }
       input:focus { outline: none; }​
     </style>

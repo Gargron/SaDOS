@@ -14,9 +14,23 @@
    * This is her, SaDOS.
    */
 
-  var SaDOS = function (steps, print_callback) {
+  var SaDOS = function (input, steps, print_callback) {
     var self  = this,
-        step  = 0;
+        step  = 0,
+        user_input = [],
+        arrow_press_count = 0,
+        SaDOS_prefix = 'SaDOS: ';
+        user_prefix = '$ '
+
+     var commands = {
+      ssh: 'haha noway!',
+      boobs: 'hooray for boobs',
+      ls: 'root\nporn\ndev',
+      cd: 'permission denied',
+      sudo: 'Password...',
+      alert: function() { alert('you\'re cool')}
+
+    };
 
     /**
      * This happens whenever a requirement is met, i.e. she can move
@@ -36,8 +50,19 @@
      * the provided callback.
      */
 
-    this.print = function (text) {
-      print_callback.apply(null, [text]);
+    this.print = function (text, user) {
+      if (user === 'user') {
+        text = user_prefix + text;
+        print_callback.apply(null, [text]);
+      } else {
+        text = text.split('\n');
+        msg = [];
+        for (var i = 0; i < text.length - 1; i++) {
+          msg +=  SaDOS_prefix + text[i] + '\n';
+        }
+        msg +=  SaDOS_prefix + text[text.length - 1]
+        print_callback.apply(null, [msg]);
+      }
     };
 
     /**
@@ -46,6 +71,11 @@
 
     this.start = function () {
       self.print(steps[step].msg);
+    };
+
+    this.reset = function() {
+      input.value = "";
+      arrow_press_count = 0;
     };
 
     /**
@@ -60,24 +90,78 @@
     this.check = function (code, val) {
       var req = steps[step].req;
 
-      if (val.length > 0) {
-        self.print('$ ' + val);
-      }
+      if (code === 13) { //enter
+        if (val.length !== undefined) {
+          self.print(val, 'user');
+          user_input.push(val);
+          self.reset();
+          self.listen(val);
+        }
 
-      if (req instanceof SaDOS_Key) {
-        if (code === req.code) {
-          self.step();
+        if (req instanceof SaDOS_Key) {
+          if (code === req.code) {
+            self.step();
+          }
+        } else if (req instanceof RegExp) {
+          if (val.search(req) !== -1) {
+            self.step();
+          }
+        } else {
+          if (req === val) {
+            self.step();
+          }
         }
-      } else if (req instanceof RegExp) {
-        if (val.search(req) !== -1) {
-          self.step();
+      } else if (code === 38) { //up arrow
+        arrow_press_count++;
+        var latest_input = user_input[user_input.length - arrow_press_count];
+
+        if (latest_input !== undefined) {
+          if (latest_input === input.value) {
+            input.value = latest_input;
+          }
+          else {
+            input.value = latest_input;
+          }
         }
-      } else {
-        if (req === val) {
-          self.step();
+      
+      } else if (code === 40) { //down arrow
+        arrow_press_count--;
+        
+        var latest_input = user_input[user_input.length - arrow_press_count];
+        
+        if (latest_input !== undefined) {
+          if (latest_input === input.value) {
+            input.value = latest_input;
+          }
+          else {
+            input.value = latest_input;
+          }
         }
+      
+      } else if (code === 8) { //backspace 
+         if (input.value === '') {
+           arrow_press_count = 0;
+         }
       }
     };
+    
+    this.listen = function(val) {
+      for (command in commands) {
+        var msg = commands[command];
+        if (val.match(command)) {
+          if (typeof msg === 'string') {
+            self.print(msg);
+          } else if (typeof msg === 'function') {
+            var command = commands[command];
+            command();
+          } 
+          return false;
+        } 
+      }
+  }
+
+
+
   };
 
   /**
