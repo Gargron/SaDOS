@@ -22,6 +22,16 @@
         SaDOS_prefix = 'SaDOS: ';
         user_prefix = '$ '
 
+     var commands = {
+      ssh: 'haha noway!',
+      boobs: 'hooray for boobs',
+      ls: 'root\nporn\ndev',
+      cd: 'permission denied',
+      sudo: 'Password...',
+      alert: function() { alert('you\'re cool')}
+
+    };
+
     /**
      * This happens whenever a requirement is met, i.e. she can move
      * on to the next step. If there is no next step, she does
@@ -136,10 +146,19 @@
     };
     
     this.listen = function(val) {
-      if (val === "boobs") {
-        self.print('hooray for boobs!');
-      }  
-    }
+      for (command in commands) {
+        var msg = commands[command];
+        if (val.match(command)) {
+          if (typeof msg === 'string') {
+            self.print(msg);
+          } else if (typeof msg === 'function') {
+            var command = commands[command];
+            command();
+          } 
+          return false;
+        } 
+      }
+  }
 
 
 
